@@ -1,0 +1,12 @@
+.Rproj.user
+*.RData
+.Rhistory
+
+*.pdf
+*.png
+*.jpg
+*.html
+
+*test.R
+
+TO-DO.txt
