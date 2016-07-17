@@ -1,0 +1,136 @@
+"subject","language","gender","age","date","encoding","ling_order"
+"201_vi","Swedish","female",24,"2016-02-11","interference",1
+"202_vi","Swedish","female",19,"2016-02-18","interference",2
+"203_vi","Swedish","female",27,"2016-02-18","interference",3
+"204_vi","Swedish","male",25,"2016-02-22","interference",4
+"205_vi","Swedish","female",27,"2/24/2016","interference",2
+"206_vi","Swedish","female",29,"2/25/2016","interference",2
+"207_vi","Swedish","female",24,"2/29/2016","interference",4
+"208_vi","Swedish","female",21,"2/29/2016","interference",1
+"209_vi","Swedish","male",24,"3/1/2016","interference",3
+"210_vi","Swedish","female",20,"3/1/2016","interference",4
+"211_vi","Swedish","female",28,"3/3/2016","interference",1
+"213_vi","Swedish","male",22,"3/8/2016","interference",2
+"214_vi","Swedish","female",21,"3/9/2016","interference",3
+"215_vi","Swedish","female",22,"3/9/2016","interference",1
+"216_vi","Swedish","female",23,"3/9/2016","interference",2
+"217_vi","Swedish","male",31,"3/11/2016","interference",4
+"218_vi","Swedish","female",35,"3/11/2016","interference",3
+"219_vi","Swedish","male",20,"3/11/2016","interference",3
+"220_vi","Swedish","female",22,"3/15/2016","interference",4
+"221_vi","Swedish","male",22,"3/17/2016","interference",4
+"104_vi","Spanish","female",20,"2015-12-14","interference",1
+"105_vi","Spanish","male",20,"12/14/2015","interference",1
+"106_vi","Spanish","female",20,"2015-12-14","interference",1
+"107_vi","Spanish","female",20,"2015-12-14","interference",1
+"108_vi","Spanish","female",20,"2015-12-14","interference",1
+"109_vi","Spanish","female",20,"2015-12-15","interference",1
+"110_vi","Spanish","male",25,"2015-12-15","interference",1
+"111_vi","Spanish","male",20,"12/15/2015","interference",4
+"112_vi","Spanish","male",20,"2015-12-15","interference",3
+"113_vi","Spanish","male",21,"2015-12-15","interference",3
+"114_vi","Spanish","female",24,"2015-12-16","interference",2
+"115_vi","Spanish","female",21,"2015-12-16","interference",2
+"116_vi","Spanish","female",20,"2015-12-16","interference",4
+"117_vi","Spanish","female",20,"2015-12-16","interference",2
+"118_vi","Spanish","female",21,"2015-12-16","interference",3
+"119_vi","Spanish","female",21,"2015-12-16","interference",4
+"120_vi","Spanish","female",20,"2015-12-17","interference",2
+"121_vi","Spanish","female",20,"2015-12-17","interference",3
+"122_vi","Spanish","male",20,"2015-12-17","interference",4
+"123_vi","Spanish","female",21,"2015-12-17","interference",2
+"111","Spanish","female",22,"2012-09-24","linguistic",1
+"112","Spanish","female",21,"2012-09-25","linguistic",3
+"113","Spanish","female",21,"2012-09-25","linguistic",3
+"114","Spanish","female",23,"2012-09-26","free",4
+"115","Spanish","female",24,"2012-09-26","linguistic",1
+"116","Spanish","female",20,"2012-09-27","free",2
+"117","Spanish","female",22,"2012-09-27","linguistic",1
+"118","Spanish","female",23,"2012-10-01","free",4
+"119","Spanish","female",28,"2012-10-02","linguistic",4
+"120","Spanish","female",20,"2012-10-02","linguistic",4
+"121","Spanish","female",23,"2012-10-03","free",1
+"122","Spanish","female",24,"2012-10-04","linguistic",1
+"123","Spanish","female",21,"2012-10-04","free",3
+"211","Spanish","male",25,"2012-09-24","linguistic",1
+"212","Spanish","male",20,"2012-09-26","free",2
+"213","Spanish","male",19,"2012-09-26","free",3
+"215","Spanish","male",21,"2012-09-27","linguistic",2
+"216","Spanish","male",21,"2012-10-01","linguistic",2
+"217","Spanish","male",25,"2012-10-01","linguistic",1
+"218","Spanish","male",22,"2012-10-03","linguistic",2
+"219","Spanish","male",28,"2012-10-03","free",1
+"220","Spanish","male",20,"2012-10-04","free",2
+"307","Spanish","female",20,"2012-09-24","free",4
+"311","Spanish","female",21,"2012-09-24","linguistic",4
+"312","Spanish","female",25,"2012-09-25","linguistic",2
+"313","Spanish","female",31,"2012-09-25","linguistic",3
+"314","Spanish","female",25,"2012-09-26","free",4
+"315","Spanish","female",29,"2012-09-27","free",1
+"316","Spanish","female",27,"2012-09-27","free",3
+"317","Spanish","female",21,"2012-09-27","free",2
+"318","Spanish","female",21,"2012-10-01","linguistic",4
+"319","Spanish","female",26,"2012-10-02","free",3
+"320","Spanish","female",21,"2012-10-03","free",4
+"321","Spanish","female",21,"2012-10-03","free",1
+"322","Spanish","female",20,"2012-10-04","linguistic",3
+"323","Spanish","female",27,"2012-10-04","linguistic",1
+"404","Spanish","male",20,"2012-09-24","free",NA
+"411","Spanish","male",21,"2012-09-25","linguistic",4
+"412","Spanish","male",22,"2012-09-26","free",2
+"413","Spanish","male",21,"2012-09-26","free",3
+"414","Spanish","male",22,"2012-09-27","free",2
+"415","Spanish","male",21,"2012-10-01","linguistic",2
+"416","Spanish","male",22,"2012-10-01","free",1
+"417","Spanish","male",21,"2012-10-03","free",4
+"418","Spanish","male",28,"2012-10-03","linguistic",3
+"419","Spanish","male",20,"2012-10-04","free",2
+"420","Spanish","male",27,"2012-10-04","linguistic",2
+"601","Spanish","male",23,"2012-10-04","linguistic",4
+"701","Swedish","female",27,"2012-11-13 16.45.00","linguistic",1
+"702","Swedish","female",22,"2012-11-15 11.00.00","linguistic",3
+"703","Swedish","female",33,"2012-11-28 13.00.00","linguistic",1
+"704","Swedish","female",25,"2012-11-30 10.00.00","linguistic",2
+"705","Swedish","female",25,"2012-11-30 12.30.00","linguistic",4
+"706","Swedish","female",20,"2012-11-30 14.00.00","linguistic",3
+"707","Swedish","female",25,"2012-12-03 12.00.00","linguistic",3
+"708","Swedish","female",20,"2012-12-04 15.00.00","free",3
+"709","Swedish","female",21,"2012-12-06 11.00.00","linguistic",2
+"710","Swedish","female",24,"2012-12-10 11.00.00","linguistic",3
+"711","Swedish","female",25,"2012-12-18 15.00.00","linguistic",4
+"751","Swedish","female",22,"2012-11-09 12.00.00","free",2
+"752","Swedish","female",24,"2012-11-15 09.45.00","free",3
+"753","Swedish","female",22,"2012-11-27 11.00.00","free",1
+"754","Swedish","female",28,"2012-12-04 10.00.00","free",2
+"755","Swedish","female",28,"2012-12-11 11.00.00","free",4
+"756","Swedish","female",25,"2012-12-11 13.00.00","free",4
+"757","Swedish","female",21,"2012-12-13 13.00.00","free",3
+"758","Swedish","female",24,"2012-12-14 13.00.00","free",2
+"759","Swedish","female",25,"2012-12-17 15.00.00","free",1
+"760","Swedish","female",26,"2012-12-17 17.00.00","free",3
+"761","Swedish","female",25,"2012-12-21 16.30.00","free",4
+"762","Swedish","female",21,"2013-12-16 12.00.00","free",3
+"763","Swedish","female",28,"2013-12-19 16.00.00","free",4
+"801","Swedish","male",25,"2012-12-04 13.00.00","linguistic",4
+"802","Swedish","male",22,"2012-12-06 12.00.00","linguistic",1
+"803","Swedish","male",24,"2012-12-07 12.00.00","linguistic",4
+"804","Swedish","male",35,"2012-12-14 10.00.00","linguistic",1
+"805","Swedish","male",29,"2012-12-17 10.00.00","linguistic",1
+"806","Swedish","male",23,"2012-12-18 16.00.00","linguistic",1
+"807","Swedish","male",26,"2012-12-19 08.45.00","linguistic",2
+"808","Swedish","male",32,"2012-12-19 10.00.00","linguistic",2
+"809","Swedish","male",34,"2013-12-12 13.30.00","linguistic",2
+"810","Swedish","male",23,"2013-12-12 15.00.00","linguistic",4
+"811","Swedish","male",23,"2013-12-17 12.30.00","linguistic",2
+"812","Swedish","male",22,"2013-12-17 14.00.00","linguistic",3
+"851","Swedish","male",28,"2012-11-30 08.45.00","free",4
+"852","Swedish","male",20,"2012-11-30 11.00.00","free",3
+"853","Swedish","male",25,"2012-12-03 09.00.00","free",4
+"854","Swedish","male",34,"2012-12-10 10.00.00","free",1
+"855","Swedish","male",25,"2012-12-13 12.00.00","free",2
+"856","Swedish","male",31,"2012-12-13 16.00.00","free",3
+"857","Swedish","male",35,"2012-12-18 13.00.00","free",2
+"858","Swedish","male",25,"2012-12-19 13.00.00","free",1
+"859","Swedish","male",24,"2012-12-19 20.00.00","free",1
+"860","Swedish","male",30,"2013-12-16 15.00.00","free",2
+"861","Swedish","male",29,"2013-12-18 14.00.00","free",2
