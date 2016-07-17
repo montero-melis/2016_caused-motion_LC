@@ -1,27 +1,15 @@
 ## Script to fit the models
 
-
-# Experiment 1
-fm_exp1 <- lmer(
-  formula = as.formula(formula_exp_full_re),
-  data = e1c,
-  control = lmerControl(optCtrl = list(maxfun = 100000)),
-  verbose=2)
-summary(fm_exp1)
-
-
-
-
 # The many mixed models fitted in the script take a very long computation time.
 # Instead of running them, you can load the stored data (.Rdata format), as is
 # done in the script "analysis_figures_results.R"
 
 
-# library("plyr")
+library("plyr")
 # library("reshape2")
 # library("tidyr")
 # library("ggplot2")
-# library("lme4")
+library("lme4")
 # library("arm")
 # # library("GGally")
 # library("knitr")
@@ -29,7 +17,7 @@ summary(fm_exp1)
 
 
 ###############################################################
-## Import (and process) data
+## Import data
 ###############################################################
 
 # This data frame contains the similarity data for all three experiments.
@@ -48,16 +36,8 @@ e1 <- exp123[exp123$Encoding == "linguistic", ]
 e2 <- exp123[exp123$Encoding == "free", ]
 e3 <- exp123[exp123$Encoding == "interference", ]
 
-# # participant info
-# participants <- read.csv("s_data/participants_exp123.csv", encoding = "UTF-8")
-
-
-# ###############################################################
-# ## Convenience functions
-# ###############################################################
-# 
-# # compute standard error (takes care of vectors that contain NA's)
-# se <- function(x) sd(x, na.rm = TRUE) / sqrt(sum(!is.na(x)))
+# participant info
+participants <- read.csv("data_participants.csv", encoding = "UTF-8")
 
 
 
@@ -98,30 +78,14 @@ center_my_data <- function(df = NULL) {
 # P, MC, MO, Di, Ob, Gr: same +, different -
 
 
-## Model formulae for each of Exp 1 through 3
-
-# model without any 2nd order interactions between semantic components
-formula_exp_nointer <- 
-  "Sim ~ 1 + (P + MC + MO + Di + Gr + Ob) * Language +
-(1 + P + MC + MO + Di + Gr + Ob | Subject) + (1 | Item)"
-
-# simple model (control variables only as fixed effects)
-formula_exp_simple_re <- 
-  "Sim ~ 1 + (P + MC + MO + Di) ^ 2 * Language + Gr * Language + Ob * Language + 
-(1 + P + MC + MO + Di | Subject) + (1 | Item)"
-
+## Model formula for each of Exp 1 through 3
 # full model (control variables as fixed effects and random effects)
 formula_exp_full_re <- 
   "Sim ~ 1 + (P + MC + MO + Di) ^ 2 * Language + Gr * Language + Ob * Language + 
 (1 + (P + MC + MO + Di) ^ 2 + Gr + Ob | Subject) + (1 | Item)"
-
-formula_exp_nointer <- gsub("\n", "", formula_exp_nointer)
-formula_exp_simple_re <- gsub("\n", "", formula_exp_simple_re)
 formula_exp_full_re <- gsub("\n", "", formula_exp_full_re)
 
-# show formulae
-formula_exp_nointer
-formula_exp_simple_re
+# show formula
 formula_exp_full_re
 
 
@@ -139,86 +103,21 @@ ddply(participants[participants$encoding == "linguistic", ],
       .(language), summarise, 
       Mage = mean(age), SDage = sd(age))
 
-## fit models
+
+## fit full model ("full" in terms of random effects)
 
 # center data
 e1c <- center_my_data(e1)
 head(e1)
 head(e1c)
 
-
-# no higher interactions model (REML=TRUE, default)
-Sys.time()
-ptm <- proc.time()
-
-fm_e1_nointer <- lmer(
-  formula = as.formula(formula_exp_nointer),
-  data = e1c, verbose=2,
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e1_nointer <- proc.time() - ptm
-print(t.fm_e1_nointer)
-Sys.time()
-
-summary(fm_e1_nointer)
-
-
-# simple model (in terms of random effects)
-Sys.time()
-ptm <- proc.time()
-
-fm_e1_simple_ML <- lmer(
-  formula = as.formula(formula_exp_simple_re),
-  data = e1c, verbose=2, REML=FALSE, 
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e1_simple_ML <- proc.time() - ptm
-print(t.fm_e1_simple_ML)
-Sys.time()
-
-summary(fm_e1_simple_ML)
-
-# simple model (in terms of random effects)
-# REML=TRUE
-Sys.time()
-ptm <- proc.time()
-
-fm_e1_simple <- lmer(
-  formula = as.formula(formula_exp_simple_re),
-  data = e1c, verbose=2, REML=TRUE, 
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e1_simple <- proc.time() - ptm
-print(t.fm_e1_simple)
-Sys.time()
-
-summary(fm_e1_simple)
-
-
-# full model (in terms of random effects)
-Sys.time()
-ptm <- proc.time()
-
-fm_e1_full_ML <- lmer(
-  formula = as.formula(formula_exp_full_re),
-  data = e1c, verbose=2, REML=FALSE, 
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e1_full_ML <- proc.time() - ptm
-print(t.fm_e1_full_ML)
-Sys.time()
-
-summary(fm_e1_full_ML)
-
-
-# full model (in terms of random effects)
-# REML=TRUE
-Sys.time()
+# fit full model
+Sys.time()  # keep track of the time this takes
 ptm <- proc.time()
 
 fm_e1_full <- lmer(
   formula = as.formula(formula_exp_full_re),
-  data = e1c, verbose=2, REML=TRUE, 
+  data = e1c, verbose=2,
   control = lmerControl(optCtrl = list(maxfun = 100000)))
 
 t.fm_e1_full <- proc.time() - ptm
@@ -228,116 +127,6 @@ Sys.time()
 summary(fm_e1_full)
 
 
-
-###############################################################
-## Experiment 1: by-speaker correlations
-###############################################################
-
-
-## categorization data
-
-# load fitted model for Exp1 (linguistic encoding condition),
-# i.e. full model fitted in previous section (can be loaded as R image from
-# "models/final_models/LC_analysis.RData")
-fm_ling <- fm_e1_full
-
-summary(fm_ling)
-
-
-
-# Extract by subject coefficients
-# For how to extract by-subject coefficients (adjusted with random effects):
-# http://stats.stackexchange.com/questions/122009/extracting-slopes-for-cases-from-a-mixed-effects-model-lme4
-bs_coef <- coef(fm_ling)$Subject
-# Add column with subject ID
-bs_coef$Subject <- row.names(bs_coef)
-head(bs_coef)
-
-# remove all interaction terms and other predictors not needed:
-bs_coef <- bs_coef[, c(27, 2:5, 7, 8)]
-head(bs_coef)
-
-## participant data
-
-# import participant data
-ppts <- read.csv("../data_shared/participant_data_hopi_140708.csv")
-lookup <- ppts[, c("ID", "Group")]
-lookup <- rename(lookup, c("ID" = "Subject", "Group" = "Language"))
-lookup$Language <- revalue(lookup$Language, c("SpAD" = "Spanish",
-                                              "SwAD" = "Swedish"))
-head(lookup)
-
-bs_coef <- join(bs_coef, lookup)
-rm(ppts, lookup)
-
-head(bs_coef)
-# to long format
-bs_coef_l <- gather(bs_coef, Component, Similarity, P:Ob)
-# rename Components
-bs_coef_l$Component <- revalue(bs_coef_l$Component,
-                               c("P" = "Path", "MC" = "MannerCause",
-                                 "MO" = "MannerObject", "Di" = "Direction",
-                                 "Gr" = "Ground", "Ob" = "Object"))
-head(bs_coef_l)
-
-## linguistic data
-
-# we already import the coded linguistic data in wide format for the norming  
-# study above (df: lingw)
-# we don't need all the columns
-lingw <- lingw[, c(2:3, 10:15)]
-# convert to long format analogous to bs_coef_l
-lingl <- gather(lingw, Component, Descriptions, Path:Object)
-# turn value column into binary (either component mentioned or not in given
-# description)
-lingl$Descriptions <- ifelse(lingl$Descriptions == 0, 0, 1)
-lingl <- rename(lingl, c("subject" = "Subject"))
-head(lingl)
-
-# by-subject averages
-ling_bs <- ddply(lingl, .(Subject, Component), summarise,
-                 Description = sum(Descriptions)/length(Descriptions))
-head(ling_bs)
-
-# now join
-bs <- join(bs_coef_l, ling_bs)
-# reorder factor levels
-bs$Component <- factor(bs$Component, levels = c("Path", "MannerCause", 
-                                                "MannerObject", "Direction",
-                                                "Ground", "Object"))
-head(bs)
-
-rm(lingl, lingw, ling_bs, bs_coef, bs_coef_l)
-
-## plot correlations
-
-# focus on critical components only
-ggplot(data = bs[bs$Component %in% c("Path", "MannerCause", "MannerObject"), ],
-       aes(x = Description, y = Similarity, colour = Language, 
-           shape = Language, linetype = Language)) +
-  geom_point() + geom_smooth(method = "lm") +
-  facet_wrap(~ Component) +
-  ylim(-.1, .5) + theme_bw() +
-  ylab("Increase in similarity") +
-  xlab("Proportion of descriptions") +
-  theme(legend.position=c(.9, .8),
-        text = element_text(size=12),
-        axis.title.x = element_text(vjust=0),
-        axis.title.y = element_text(vjust=1)) 
-
-ggsave("myfigures/LC_ling-similarity_correl.png", height = 3.5)
-
-## Pearson correlations
-for(comp in c("Path", "MannerCause", "MannerObject")) {
-  print(paste("Component:", comp))
-  for(lang in c("Spanish", "Swedish")) {
-    mysubset <- bs$Component == comp & bs$Language == lang
-    d <- bs[mysubset, ]
-    print(paste("Language:", lang))
-    print(with(d, cor.test(Similarity, Description)))
-    
-  }
-}
 
 ###############################################################
 ## Experiment 2: free encoding
@@ -353,45 +142,12 @@ ddply(participants[participants$encoding == "free", ],
       Mage = mean(age), SDage = sd(age))
 
 
-## fit models
+## fit model
 
 # center data
 e2c <- center_my_data(e2)
 head(e2)
 head(e2c)
-
-
-# no higher interactions model (REML=TRUE, default)
-Sys.time()
-ptm <- proc.time()
-
-fm_e2_nointer <- lmer(
-  formula = as.formula(formula_exp_nointer),
-  data = e2c, verbose=2,
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e2_nointer <- proc.time() - ptm
-print(t.fm_e2_nointer)
-Sys.time()
-
-summary(fm_e2_nointer)
-
-
-# simple model (in terms of random effects)
-Sys.time()
-ptm <- proc.time()
-
-fm_e2_simple <- lmer(
-  formula = as.formula(formula_exp_simple_re),
-  data = e2c, verbose=2, 
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e2_simple <- proc.time() - ptm
-print(t.fm_e2_simple)
-Sys.time()
-
-summary(fm_e2_simple)
-
 
 # full model (in terms of random effects)
 Sys.time()
@@ -424,45 +180,12 @@ ddply(participants[participants$encoding == "interference", ],
       Mage = mean(age), SDage = sd(age))
 
 
-## fit models
+## fit model
 
 # center data
 e3c <- center_my_data(e3)
 head(e3)
 head(e3c)
-
-
-# no higher interactions model (REML=TRUE, default)
-Sys.time()
-ptm <- proc.time()
-
-fm_e3_nointer <- lmer(
-  formula = as.formula(formula_exp_nointer),
-  data = e3c, verbose=2,
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e3_nointer <- proc.time() - ptm
-print(t.fm_e3_nointer)
-Sys.time()
-
-summary(fm_e3_nointer)
-
-
-# simple model (in terms of random effects)
-Sys.time()
-ptm <- proc.time()
-
-fm_e3_simple <- lmer(
-  formula = as.formula(formula_exp_simple_re),
-  data = e3c, verbose=2, 
-  control = lmerControl(optCtrl = list(maxfun = 100000)))
-
-t.fm_e3_simple <- proc.time() - ptm
-print(t.fm_e3_simple)
-Sys.time()
-
-summary(fm_e3_simple)
-
 
 # full model (in terms of random effects)
 Sys.time()
@@ -551,288 +274,6 @@ model_csv <- function(fm_name = NULL) {
 model_csv("fm_e1_full")
 model_csv("fm_e2_full")
 model_csv("fm_e3_full")
-
-
-###############################################################
-## Visualization Experiments 1-3 (functions)
-###############################################################
-
-# For each experiment, we want a figure that shows the effect on similarity 
-# judgements of each of the three critical event components by language.
-# To generate the data needed for this figure we write a couple of functions
-# that will be nested (one calls the other). The necessary data is obtained 
-# by simulating model coefficients from the fitted model using arm::sim.
-# (As I did for example for the Language Learning paper, see the gitrepos 
-# "caused-motion_l2")
-
-# 1) Function to compute 95% confidence intervals (CI) for a semantic component
-# by language, based on simulations from the model's fixef parameters.
-# The result is put into a dataframe.
-coefCI <- function(fm_sim, var = NULL, spa_we = NULL, swe_we = NULL,
-                   pr = c(.025, .5, .975)) {
-  # fm_sim is an object created by the arm::sim function
-  # var specifies the semantic component for which effects are to be estimated
-  # spa_we & swe_we specify the weights of each language when centering the
-  # Language variable (needs to be obtained from data frame used to fit model)
-  # pr specifies the probability quantiles to be obtained, by default 95% CI
-  
-  mysim <- fixef(fm_sim)
-  main <- mysim[, var]
-  interaction <- mysim[, paste(var, "Language", sep = ":")]
-  spa <- main + spa_we * interaction
-  swe <- main + swe_we * interaction
-  myquant <- data.frame(rbind(quantile(spa, probs = pr),
-                              quantile(swe, probs = pr)))
-  names(myquant) <- c("lower95", "median", "upper95")
-  myquant$Component <- var
-  myquant$Language <- c("Spanish", "Swedish")
-  myquant
-}
-
-# 2) This function calls coefCI to compute coefficients for each component
-modelCI <- function(fm, nb.sims = 2000, components = c("P", "MC", "MO")) {
-  # fm: the model for which 95% CI have to be estimated
-  # nb.sims: number of simulations used in the sim function (>= 2000)
-  # components: the event components for which to compute CI
-  
-  fm_sim <- sim(fm, n.sims = nb.sims)
-  # extract language weights after centering the Language variable
-  lang_weights <- sort(unique(fm@frame$Language))
-  spa_wei <- lang_weights[1]  # the negative value in our coding scheme
-  swe_wei <- lang_weights[2]  # the positive value
-  out <- data.frame()
-  for (component in components) {
-    d <- coefCI(fm_sim, var = component, spa_we = spa_wei, swe_we = swe_wei)
-    out <- rbind(out, d)
-  }
-  # order Component factor levels as entered in function call
-  out$Component <- factor(out$Component, levels = components)
-  # and give less cryptic names to Component levels
-  out$Component <- mapvalues(out$Component, from = levels(out$Component),
-                             to = c("same Path", "same MannerCause",
-                                    "same MannerObject"))
-  out
-}
-
-# specify some global plotting variables used for figures in all experiments
-exp123_theme <- theme(text = element_text(size=12),
-                      axis.title.y=element_text(vjust=1),
-                      plot.title = element_text(hjust = 0, vjust=1),
-                      legend.position = c(.85, .75))
-y_limits <- ylim(c(-.025, .275))
-
-
-
-###############################################################
-## Visualization Experiments 1-3 (plots)
-###############################################################
-
-## Experiment 1
-
-# Obtain data frame
-fm_exp1_CI <- modelCI(fm_e1_full)
-
-# Now plot it
-exp1_plot <- ggplot(fm_exp1_CI, aes(x = Language, y = median, fill = Language,
-                                    ymax = upper95, ymin = lower95)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(width = .2) +
-  facet_wrap(~ Component) +
-  xlab("") + ylab("Increase in similarity") +
-  theme_bw() +
-  exp123_theme +
-  y_limits +
-  ggtitle("A. Linguistic encoding (Exp. 1)")
-print(exp1_plot)
-
-# add significance labels
-coords <- data.frame(x = c(rep(NA, 4), 1, 2),
-                     y = c(rep(NA, 4), .10, .10),
-                     Component = fm_exp1_CI$Component)
-mytext <- data.frame(x = 1.5, y = 0.105, text = c("","","*"),
-                     Component = levels(fm_exp1_CI$Component))
-# add to plot
-exp1_plot <- exp1_plot + 
-  geom_path(data = coords, aes(x, y, ymin=NULL, ymax=NULL, fill=NULL)) +
-  geom_text(data = mytext, aes(x, y, label=text, ymin=NULL, ymax=NULL, fill=NULL))
-
-print(exp1_plot)
-
-ggsave("myfigures/LC_exp1.png")
-
-# plot used for talks (Barcelona SPB and Biling Centre)
-exp1_plot_talk <- ggplot(
-  fm_exp1_CI, aes(x = Language, y = median, fill = Language, ymax = upper95,
-                  ymin = lower95)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(width = .2) +
-  facet_wrap(~ Component) +
-  xlab("") + ylab("Increase in similarity") +
-  gg_talktheme +
-  y_limits
-print(exp1_plot_talk)
-
-# add significance labels to plot
-exp1_plot_talk <- exp1_plot_talk + 
-  geom_path(data = coords, aes(x, y, ymin=NULL, ymax=NULL, fill=NULL), size = 1) +
-  geom_text(data = mytext, aes(x, y, label=text, ymin=NULL, ymax=NULL, fill=NULL),
-            size = 12)
-print(exp1_plot_talk)
-
-ggsave("myfigures/talk_exp1.png")
-
-
-## Experiment 2
-
-# Obtain data frame
-fm_exp2_CI <- modelCI(fm_e2_full)
-
-# Now plot it
-exp2_plot <- ggplot(fm_exp2_CI, aes(x = Language, y = median, fill = Language,
-                                    ymax = upper95, ymin = lower95)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(width = .2) +
-  facet_wrap(~ Component) +
-  xlab("") + ylab("Increase in similarity") +
-  theme_bw() +
-  exp123_theme +
-  y_limits +
-  ggtitle("B. Free encoding (Exp. 2)")
-print(exp2_plot)
-
-# add significance labels
-coords <- data.frame(x = c(rep(NA, 4), 1, 2),
-                     y = c(rep(NA, 4), .11, .11),
-                     Component = fm_exp1_CI$Component)
-mytext <- data.frame(x = 1.5, y = 0.115, text = c("","","*"),
-                     Component = levels(fm_exp1_CI$Component))
-# add to plot
-exp2_plot <- exp2_plot + 
-  geom_path(data = coords, aes(x, y, ymin=NULL, ymax=NULL, fill=NULL)) +
-  geom_text(data = mytext, aes(x, y, label=text, ymin=NULL, ymax=NULL, fill=NULL))
-
-print(exp2_plot)
-
-ggsave("myfigures/LC_exp2.png")
-
-
-# plot used for talks (Barcelona SPB and Biling Centre)
-exp2_plot_talk <- ggplot(
-  fm_exp2_CI, aes(x = Language, y = median, fill = Language, ymax = upper95,
-                  ymin = lower95)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(width = .2) +
-  facet_wrap(~ Component) +
-  xlab("") + ylab("Increase in similarity") +
-  gg_talktheme +
-  y_limits
-print(exp2_plot_talk)
-
-# add significance labels to plot
-exp2_plot_talk <- exp2_plot_talk + 
-  geom_path(data = coords, aes(x, y, ymin=NULL, ymax=NULL, fill=NULL), size = 1) +
-  geom_text(data = mytext, aes(x, y, label=text, ymin=NULL, ymax=NULL, fill=NULL),
-            size = 12)
-print(exp2_plot_talk)
-
-ggsave("myfigures/talk_exp2.png")
-
-
-
-## Experiment 3
-
-# Obtain data frame
-fm_exp3_CI <- modelCI(fm_e3_full)
-
-# Now plot it
-exp3_plot <- ggplot(fm_exp3_CI, aes(x = Language, y = median, fill = Language,
-                                    ymax = upper95, ymin = lower95)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(width = .2) +
-  facet_wrap(~ Component) +
-  xlab("") + ylab("Increase in similarity") +
-  theme_bw() +
-  exp123_theme +
-  y_limits +
-  ggtitle("C. Verbal interference (Exp. 3)")
-
-print(exp3_plot)
-ggsave("myfigures/LC_exp3.png")
-
-
-# plot used for talks (Barcelona SPB and Biling Centre)
-exp3_plot_talk <- ggplot(
-  fm_exp3_CI, aes(x = Language, y = median, fill = Language, ymax = upper95,
-                  ymin = lower95)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(width = .2) +
-  facet_wrap(~ Component) +
-  xlab("") + ylab("Increase in similarity") +
-  gg_talktheme +
-  y_limits
-print(exp3_plot_talk)
-
-ggsave("myfigures/talk_exp3.png")
-
-
-
-###############################################################
-## Multiplot Experiments 1-3
-###############################################################
-
-# multiplot function for ggplot retrieved at
-# http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
-
-# Multiple plot function
-#
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-#
-# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-# then plot 1 will go in the upper left, 2 will go in the upper right, and
-# 3 will go all the way across the bottom.
-#
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  require(grid)
-  
-  # Make a list from the ... arguments and plotlist
-  plots <- c(list(...), plotlist)
-  
-  numPlots = length(plots)
-  
-  # If layout is NULL, then use 'cols' to determine layout
-  if (is.null(layout)) {
-    # Make the panel
-    # ncol: Number of columns of plots
-    # nrow: Number of rows needed, calculated from # of cols
-    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                     ncol = cols, nrow = ceiling(numPlots/cols))
-  }
-  
-  if (numPlots==1) {
-    print(plots[[1]])
-    
-  } else {
-    # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-    
-    # Make each plot, in the correct location
-    for (i in 1:numPlots) {
-      # Get the i,j matrix positions of the regions that contain this subplot
-      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-      
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                      layout.pos.col = matchidx$col))
-    }
-  }
-}
-
-png(filename = "myfigures/LC_exp123.png", units = "in", width = 7, height = 9,
-    res = 400)
-multiplot(exp1_plot, exp2_plot, exp3_plot, cols=1)
-dev.off()
 
 
 
