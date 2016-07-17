@@ -9,9 +9,9 @@ library(tidyr)
 ## Load the fitted models
 ###############################################################
 
-# The models can theoretically be fitted by sourcing the following script:
+# The models can be fitted from scratch by sourcing the following script:
 # source("analysis_fit_models.R")
-# However, this takes a long time (probably more than a day for all 4 models)
+# However, this takes a long time (probably several days for all 4 models)
 
 # For convenience the models have been saved as R-Data files. 
 # Load these instead:
