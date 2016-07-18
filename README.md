@@ -9,8 +9,8 @@ Montero-Melis, G., & Bylund, E. (accepted). Getting the ball rolling: the cross-
 Please contact the first author (GMM) if you are unable to reproduce the analyses or to report any other type of issue that needs to be fixed.
 
 
-Files
------
+Files -- overview
+-----------------
 
 The repository contains data files, scripts to run the analyses and saved data.
 The scripts and the data files should make it possible to reproduce all analyses,
@@ -21,9 +21,12 @@ extension ".RData").
 
 ### Data files
 
-- `data_exp1_ling.csv` contains the by-subject data for linguistic descriptions in Experiment 1; this shows for each participant the proportion of descriptions that expressed each of the event components.
+- `data_exp1_ling.csv` contains the by-subject data for linguistic descriptions in Experiment 1; it shows, for each participant, the proportion of descriptions that expressed each of the event components.
+- `data_experiments_raw.csv` contains the raw data as obtained from the E-Prime software in which the experiment was run. The E-prime output was heavily simplified, removing unnecessary columns and rows. This is the data that is turned into the similarity data of `data_experiments_similarity.csv` with the script `analysis_obtain-similarities.R`.
+- `data_experiments_similarity.csv` is the similarity data on which the models are fitted after minor processing. It is obtained from `data_experiments_raw.csv` with the script `analysis_obtain-similarities.R`.
 - `data_norms.csv` contains the data for the linguistic norming study (reported under Experiment 1).
-- `data_participants.csv` contains information about the participants in Experiments 1-3 (but not from participants in the norming study)
+- `data_participants.csv` contains information about the participants in Experiments 1-3 (but not from participants in the norming study).
+- `data_videoclip-info.csv` contains info about the 32 target items.
 
 
 ### R scripts
@@ -31,6 +34,10 @@ extension ".RData").
 - `analysis_figures_results.R` reproduces the figures for all the reported analyses, including the scatterplots and correlations in Exp 1 (cf. Fig. 3 and Table 2). This script loads the fitted models, which can either be directly loaded from the saved objects or reproduced running the script `analysis_fit_models.R`.
 - `analysis_fit_models.R` fits all the models reported in the paper and saves them to file. Note that this might take a very long time---up to several days on my Intel (R) Core(TM) i7 CPU L640, 4.00 GB RAM, running on Windows 7.
 - `analysis_norming_study.R` reproduces all analyses related to the norming study.
+
+
+Data files: description of variables
+------------------------------------
 
 
 Abbreviations
