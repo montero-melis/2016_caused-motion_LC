@@ -1,33 +1,33 @@
-videoname,MannerCause,MannerObject,Path,Object,Ground,Direction,VideoDuration
-pgd_valcol,push,slide,down,val,col,rl,7600
-pgd_valnei,push,slide,down,val,nei,lr,7400
-pge_tabgro,push,slide,into,tab,gro,rl,8000
-pge_tabmai,push,slide,into,tab,mai,lr,7400
-pgm_paqdun,push,slide,up,paq,dun,lr,6000
-pgm_paqtoi,push,slide,up,paq,toi,rl,6600
-pgt_panrou,push,slide,across,pan,roa,lr,6000
-pgt_panrue,push,slide,across,pan,rue,rl,7800
-prd_balcol,push,roll,down,bal,col,rl,7600
-prd_balnei,push,roll,down,bal,nei,lr,7000
-pre_pnegro,push,roll,into,pne,gro,lr,8200
-pre_pnemai,push,roll,into,pne,mai,rl,7200
-prm_boudun,push,roll,up,bou,dun,lr,6000
-prm_boutoi,push,roll,up,bou,toi,rl,7800
-prt_rourou,push,roll,across,rou,roa,lr,6400
-prt_rourue,push,roll,across,rou,rue,rl,7000
-tgd_malcol,pull,slide,down,mal,col,lr,7000
-tgd_malnei,pull,slide,down,mal,nei,rl,7400
-tge_chagro,pull,slide,into,cha,gro,rl,8000
-tge_chamai,pull,slide,into,cha,mai,lr,7600
-tgm_sacdun,pull,slide,up,sac,dun,lr,7000
-tgm_sactoi,pull,slide,up,sac,toi,rl,8000
-tgt_cherou,pull,slide,across,che,roa,rl,7000
-tgt_cherue,pull,slide,across,che,rue,lr,6000
-trd_brocol,pull,roll,down,bro,col,lr,8400
-trd_bronei,pull,roll,down,bro,nei,rl,8000
-tre_cadgro,pull,roll,into,cad,gro,lr,7600
-tre_cadmai,pull,roll,into,cad,mai,rl,7000
-trm_voidun,pull,roll,up,voi,dun,lr,6600
-trm_voitoi,pull,roll,up,voi,toi,rl,7000
-trt_pourou,pull,roll,across,pou,roa,rl,6800
-trt_pourue,pull,roll,across,pou,rue,lr,6800
+Scene,Path,MannerCause,MannerObject,Direction,Object,Ground,VideoDuration
+pgd_valcol,down,push,slide,right-left,suitcase,hill,7600
+pgd_valnei,down,push,slide,left-right,suitcase,snowy hill,7400
+pge_tabgro,into,push,slide,right-left,table,cave,8000
+pge_tabmai,into,push,slide,left-right,table,barn,7400
+pgm_paqdun,up,push,slide,left-right,gift,dune,6000
+pgm_paqtoi,up,push,slide,right-left,gift,roof,6600
+pgt_panrou,across,push,slide,left-right,apple basket,road,6000
+pgt_panrue,across,push,slide,right-left,apple basket,street,7800
+prd_balcol,down,push,roll,right-left,ball,hill,7600
+prd_balnei,down,push,roll,left-right,ball,snowy hill,7000
+pre_pnegro,into,push,roll,left-right,wheel,cave,8200
+pre_pnemai,into,push,roll,right-left,wheel,barn,7200
+prm_boudun,up,push,roll,left-right,rubber ring,dune,6000
+prm_boutoi,up,push,roll,right-left,rubber ring,roof,7800
+prt_rourou,across,push,roll,left-right,cart wheel,road,6400
+prt_rourue,across,push,roll,right-left,cart wheel,street,7000
+tgd_malcol,down,pull,slide,left-right,trunk,hill,7000
+tgd_malnei,down,pull,slide,right-left,trunk,snowy hill,7400
+tge_chagro,into,pull,slide,right-left,chair,cave,8000
+tge_chamai,into,pull,slide,left-right,chair,barn,7600
+tgm_sacdun,up,pull,slide,left-right,bag,dune,7000
+tgm_sactoi,up,pull,slide,right-left,bag,roof,8000
+tgt_cherou,across,pull,slide,right-left,rocking horse,road,7000
+tgt_cherue,across,pull,slide,left-right,rocking horse,street,6000
+trd_brocol,down,pull,roll,left-right,wheelbarrow,hill,8400
+trd_bronei,down,pull,roll,right-left,wheelbarrow,snowy hill,8000
+tre_cadgro,into,pull,roll,left-right,shopping cart,cave,7600
+tre_cadmai,into,pull,roll,right-left,shopping cart,barn,7000
+trm_voidun,up,pull,roll,left-right,toy car,dune,6600
+trm_voitoi,up,pull,roll,right-left,toy car,roof,7000
+trt_pourou,across,pull,roll,right-left,pram,road,6800
+trt_pourue,across,pull,roll,left-right,pram,street,6800
