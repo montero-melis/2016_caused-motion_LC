@@ -3,7 +3,6 @@
 ## scores used for the analyses using mixed models reported in the paper.
 
 library(dplyr)
-# library("reshape2")
 
 
 ###############################################################
@@ -13,18 +12,15 @@ library(dplyr)
 # "Raw" data as obtained from E-prime (after some variable tidying)
 rawd <- read.csv("data_experiments_raw.csv")
 
-# # participant data
-# ppts <- read.csv("data_participants.csv")
-# 
-# # videoclip information
-# videoinfo <- read.csv("data_videoclip-info.csv")
+# videoclip information
+vpairs <- read.csv("data_videoclip-info.csv")
 
 
 ###############################################################
 ## Compute distances by participant and block
 ###############################################################
 
-# First order dataframe by subject, block and scene. Ordering by scene is 
+# First, order dataframe by subject, block and scene. Ordering by scene is 
 # important so that pairs of scenes always appear in the same (alphabetic)
 # order. E.g. "trd_bronei:trt_pourue" should never appear as 
 # "trt_pourue:trd_bronei" (it makes sense when you look at mypairs() function).
@@ -61,8 +57,8 @@ dist <- data.frame(
   Item = pairs_v,
   Distance = dist_v
 )
+
 head(dist)
-tail(dist)
 str(dist)
 
 
@@ -79,10 +75,12 @@ mysim <- function(v){
   sim
 }
 
-# add to data frame
+# add Similarity measure to data frame
 dist <- dist %>%
   group_by(Subject, Block) %>%
   mutate(Similarity = mysim(Distance))
+
+head(dist)
 
 # clean up
 rm(mydist, mypairs, pairs_v, dist_v, subj_unique, mysim)
@@ -92,89 +90,88 @@ rm(mydist, mypairs, pairs_v, dist_v, subj_unique, mysim)
 ## Average across blocks for each participant
 ###############################################################
 
+# Put into new dataframe with only Similarity measure
 sim <- dist %>%
   group_by(Subject, Item) %>%
   summarise(Similarity = mean(Similarity))
 
-# sort the data frame
+# sort the data frame by Subject ID and Item
 sim <- sim[with(sim, order(Subject, Item)), ]
 
+head(sim)
+
 
 ###############################################################
-## Add predictors
+## Add predictors and indexing information
 ###############################################################
 
-# add info about components shared or not in stimuli, using file from study 1
-vpairs <- read.csv("../data_shared/videopairs.csv", stringsAsFactors = FALSE)
-names(vpairs)[1] <- "Item"
-dist <- join(dist, vpairs)
-rm(vpairs)
+## Add info about whether components are shared or not between pairs of items.
+## These are our predictors to see what event components participants rely on.
 
-# now add participant language
-subj_lang <- unique(rawd[, c("subject", "language")])
-names(subj_lang) <- c("Subject", "Language")  # capital S for join to work and consistency
-# join
-dist <- join(dist, subj_lang)
-rm(subj_lang)
-
-head(dist)
-
-# # save to disk
-# write.csv(vi_sim, file = "models/data/sim_data_verbal-interference.csv",
-#           fileEncoding = "UTF-8", row.names = FALSE)
-
-
-
-
-## Another convenience function to add metainformation to data frame about 
-## whether videos 1 and 2 take on same values on semantic variables 
-## -- essentially my predictors in regression analyses
-
-same.value.fnc <- function(mydf, videoinformation = videoinfo, select.vars =
-                             c("videoname", "Path", "MannerCause",
-                               "MannerObject", "Direction", "Object", "Ground"))
-{
-  unique.pairs <- mydf[unique(mydf$videopair_id), c("videopair_id", "video1", "video2")]
-  lookup1 <- videoinfo[, select.vars] # lookup for first video in comparison
-  names(lookup1) <- paste("v1", select.vars, sep=".")
-  names(lookup1)[1] <- "video1"
-  unique.pairs <- join(unique.pairs, lookup1)
-  lookup2 <- videoinfo[, select.vars] # lookup for second video in comparison
-  names(lookup2) <- paste("v2", select.vars, sep=".")
-  names(lookup2)[1] <- "video2"
-  unique.pairs <- join(unique.pairs, lookup2)
-  # we only need to know whether video pairs have the same value on each 
-  # variable or not, recode then:
-  same.value <- with(unique.pairs, 
-                     data.frame(
-                       videopair_id = videopair_id,
-                       same_Path = as.numeric(v1.Path==v2.Path),
-                       same_MannerCause = as.numeric(v1.MannerCause==v2.MannerCause),
-                       same_MannerObject = as.numeric(v1.MannerObject==v2.MannerObject),
-                       same_Direction = as.numeric(v1.Direction==v2.Direction),
-                       same_Object = as.numeric(v1.Object==v2.Object),
-                       same_Ground = as.numeric(v1.Ground==v2.Ground)
-                     )
-  )
-  # join with dist.df
-  mydf <- join(mydf, same.value)
-  return(mydf)
+# Function to achieve this:
+scene_comparison <- function(d = vpairs) {
+  # Make sure Scenes are ordered alphabetically
+  d <- d[order(d$Scene), ]
+  # Components as matrix
+  m <- as.matrix(d[, 2:7])  # select just columns with components
+  rownames(m) <- d$Scene
+  # initialize output dataframe
+  out <- data.frame()
+  # compare each pair of Scenes: which components are same/different?
+  for (i in 1 : (nrow(m) - 1)) {
+    # scene against which the others are compared
+    s1 <- m[i, , drop = FALSE]
+    # scenes compared against s1
+    s2 <- m[(i + 1) : nrow(m), , drop = FALSE]
+    # Row by row, compare components. T if same, F if different.
+    comparison <- t(apply(s2, 1, function(row) row == s1))
+    # put into dataframe
+    curr_df <- data.frame(
+      Item = paste(rownames(s1), rownames(s2), sep = ":"),
+      comparison,
+      row.names = NULL)
+    out <- rbind(out, curr_df)
+  }
+  out[, 2:7] <- lapply(out[, 2:7], as.numeric)  # T -> 1, F -> 0
+  names(out)[2:7] <- names(d)[2:7]  # components as column names
+  out
 }
+scene_pairs <- scene_comparison()
+head(scene_pairs)
 
-# lookup data frame to add language and condition information for each subject:
-lookup <- ppts[,c("subject", "gender", "language", "condition")]
+# join with sim
+sim <- left_join(sim, scene_pairs)
+
+
+## Add language and encoding condition (Experiment)
+
+subj_info <- unique(rawd[, c("Subject", "Language", "Encoding")])
+
+# join
+sim <- left_join(sim, subj_info)
+rm(subj_info)
+
+# rearrange and rename columns
+sim <- sim %>%
+  select(Subject, Language, Encoding, Item, P = Path, MC = MannerCause,
+         MO = MannerObject, Di = Direction, Ob = Object, Gr = Ground, 
+         Sim = Similarity)
+
+# reorder rows
+sim <- sim[with(sim, order(Encoding, Language, Subject, Item)), ]
+
+head(sim)
+tail(sim)
 
 
 ###############################################################
-## Now compute dataframes and save them to disk
+## Write to disk if you want
 ###############################################################
 
-# Without imputed values
-simdata <- same.value.fnc(dist.df.fnc(dist.df.eachblock, drop.imputed=TRUE))
-simdata <- join(simdata, lookup)  # add participant data
-write.csv(simdata, "s_data/sim_data.csv", row.names=FALSE)
-
-
+# # save to disk (this is the same data as "data_experiments_similarity.csv",
+# # except for occasional rounding differences at the 16th decimal)
+# write.csv(sim, file = "data_experiments_similarity2.csv",
+#           fileEncoding = "UTF-8", row.names = FALSE)
 
 
 ###############################################################
