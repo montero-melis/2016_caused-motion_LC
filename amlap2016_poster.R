@@ -103,6 +103,9 @@ y_limits <- ylim(c(-.025, .275))
 signif_line_size <- 1
 signif_label_size <- 18
 
+mywidth <- 22
+myheight <- 12
+mydpi <- 800
 
 
 ###############################################################
@@ -143,10 +146,13 @@ mytext <- data.frame(x = 1.5, y = 0.105, text = c("","","*"),
 
 # add significance labels and title
 exp1_plot_complete <- exp1_plot +
-  ggtitle("A. Linguistic encoding (Exp. 1)") +
+  ggtitle("Exp 1: Linguistic encoding") +
   geom_path(data = coords, aes(x, y, ymin=NULL, ymax=NULL, fill=NULL), size = signif_line_size) +
   geom_text(data = mytext, aes(x, y, label=text, ymin=NULL, ymax=NULL, fill=NULL), size = signif_label_size)
 exp1_plot_complete
+
+ggsave("myfigures/FIG_amlap_exp1.png", units = "cm", dpi = mydpi,
+       width = mywidth, height = myheight)
 
 
 ## Experiment 2
@@ -166,10 +172,13 @@ mytext <- data.frame(x = 1.5, y = 0.115, text = c("","","*"),
 
 # add to plot
 exp2_plot_complete <- exp2_plot + 
-  ggtitle("B. Free encoding (Exp. 2)") +
+  ggtitle("Exp 2: Free encoding") +
   geom_path(data = coords, aes(x, y, ymin=NULL, ymax=NULL, fill=NULL), size = signif_line_size) +
   geom_text(data = mytext, aes(x, y, label=text, ymin=NULL, ymax=NULL, fill=NULL), size = signif_label_size)
 exp2_plot_complete
+
+ggsave("myfigures/FIG_amlap_exp2.png", units = "cm", dpi = mydpi,
+       width = mywidth, height = myheight)
 
 
 ## Experiment 3
@@ -181,77 +190,18 @@ exp3_plot <- exp1_plot %+% fm_exp3_CI
 exp3_plot
 # add title
 exp3_plot_complete <- exp3_plot +
-  ggtitle("C. Verbal interference (Exp. 3)")
+  ggtitle("Exp 3: Verbal interference")
 exp3_plot_complete
 
+ggsave("myfigures/FIG_amlap_exp3.png", units = "cm", dpi = mydpi,
+       width = mywidth, height = myheight)
 
-###############################################################
-## Multiplot Experiments 1-3
-###############################################################
-
-# multiplot function for ggplot retrieved at
-# http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
-
-# Multiple plot function
-#
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-#
-# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-# then plot 1 will go in the upper left, 2 will go in the upper right, and
-# 3 will go all the way across the bottom.
-#
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  require(grid)
-  
-  # Make a list from the ... arguments and plotlist
-  plots <- c(list(...), plotlist)
-  
-  numPlots = length(plots)
-  
-  # If layout is NULL, then use 'cols' to determine layout
-  if (is.null(layout)) {
-    # Make the panel
-    # ncol: Number of columns of plots
-    # nrow: Number of rows needed, calculated from # of cols
-    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                     ncol = cols, nrow = ceiling(numPlots/cols))
-  }
-  
-  if (numPlots==1) {
-    print(plots[[1]])
-    
-  } else {
-    # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-    
-    # Make each plot, in the correct location
-    for (i in 1:numPlots) {
-      # Get the i,j matrix positions of the regions that contain this subplot
-      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-      
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                      layout.pos.col = matchidx$col))
-    }
-  }
-}
-
-# multiplot
-multiplot(exp1_plot_complete, exp2_plot_complete, exp3_plot_complete, cols=1)
-
-# png version for AMLAP
-png("myfigures/FIG_exp123.png", width = 35, height = 35, units = "cm", res = 800)
-multiplot(exp1_plot_complete, exp2_plot_complete, exp3_plot_complete, cols=1)
-dev.off()
 
 # clean up workspace
 rm(coords, fm_exp1_CI, fm_exp2_CI, fm_exp3_CI, mytext,
    exp1_plot, exp1_plot_complete, exp2_plot, exp2_plot_complete,
    exp3_plot, exp3_plot_complete, multiplot, coefCI, modelCI,
    exp123_theme, y_limits)
-
 
 
 ###############################################################
