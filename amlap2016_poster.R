@@ -66,7 +66,7 @@ coefCI <- function(fm_sim, var = NULL, spa_we = NULL, swe_we = NULL,
 ### Set nb.sims back to 10000!!!
 
 # 2) This function calls coefCI to compute coefficients for each component
-modelCI <- function(fm, nb.sims = 100, components = c("P", "MC", "MO")) {
+modelCI <- function(fm, nb.sims = 5000, components = c("P", "MC", "MO")) {
   # fm: the model for which 95% CI have to be estimated
   # nb.sims: number of simulations used in the sim function (>= 2000)
   # components: the event components for which to compute CI
@@ -239,7 +239,7 @@ coefCI_comp <- function(fm_sim, var = NULL, pr = c(.025, .5, .975)) {
 }
 
 # 2) This function calls coefCI to compute coefficients for each component
-modelCI_comp <- function(fm, nb.sims = 100, 
+modelCI_comp <- function(fm, nb.sims = 5000, 
                          components = c("P", "MC", "MO", "Di", "Gr", "Ob")) {
   # fm: the model for which 95% CI have to be estimated
   # nb.sims: number of simulations used in the sim function (>= 2000)
@@ -319,7 +319,7 @@ exp_comp_plot_complete
 
 
 # png version AMLAP (ggsave() call is equivalent to the png() call used above)
-ggsave("myfigures/FIG_amlap_compound.png", width = 20, height = 11, units = "cm", dpi = 800)
+ggsave("myfigures/FIG_amlap_compound.png", width = mywidth, height = myheight, units = "cm", dpi = 800)
 
 
 # clean up
